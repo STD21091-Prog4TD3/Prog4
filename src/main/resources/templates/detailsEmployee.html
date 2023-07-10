@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Détails de l'employé</title>
+    <link rel="stylesheet" type="text/css" href="employee-details.css">
+</head>
+<body>
+<h1>Détails de l'employé</h1>
+<div>
+    <h2>Nom : <span th:text="${employee.name}"></span></h2>
+    <h2>Prénom : <span th:text="${employee.firstName}"></span></h2>
+    <h2>Numéro matricule : <span th:text="${employee.employeeNumber}"></span></h2>
+    <h2>Photo d'identité :</h2>
+    <div th:if="${employee.hasPhoto()}">
+        <img th:src="@{'/employee/photo/' + ${employee.id}}" width="200" height="200" alt="Photo d'identité">
+    </div>
+    <div th:unless="${employee.hasPhoto()}">
+        <p>Aucune image</p>
+    </div>
+</div>
+</body>
+</html>

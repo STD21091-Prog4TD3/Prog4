@@ -1,0 +1,12 @@
+/* styles/list.css */
+
+/* Limit the table width to 90vw */
+.table-responsive {
+  max-width: 70vw;
+  margin-left: 0%;
+  padding-left: 0%;
+}
+table{
+margin-left: 0%;
+padding-left: 0%;
+}

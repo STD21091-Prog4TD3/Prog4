@@ -3,21 +3,92 @@
 <head>
     <meta charset="UTF-8">
     <title>Détails de l'employé</title>
-    <link rel="stylesheet" type="text/css" href="employee-details.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        /* Additional CSS styling */
+        .employee-details {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+        }
+
+        .employee-name {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .employee-photo {
+            float: right;
+            margin-left: 20px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            padding: 5px;
+            max-width: 200px;
+            max-height: 200px;
+            overflow: hidden;
+        }
+
+        .employee-photo img {
+            width: 100%;
+            height: auto;
+        }
+
+        .employee-details p {
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
-<h1>Détails de l'employé</h1>
-<div>
-    <h2>Nom : <span th:text="${employee.name}"></span></h2>
-    <h2>Prénom : <span th:text="${employee.firstName}"></span></h2>
-    <h2>Numéro matricule : <span th:text="${employee.employeeNumber}"></span></h2>
-    <h2>Photo d'identité :</h2>
-    <div th:if="${employee.hasPhoto()}">
-        <img th:src="@{'/employee/photo/' + ${employee.id}}" width="200" height="200" alt="Photo d'identité">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+        <a class="navbar-brand" href="/">
+            <img src="logo-social.png" alt="" width="30" height="30" class="d-inline-block align-top">
+            Logo social
+        </a>
+        <ul class="navbar-nav ml-auto">>
+            <li class="nav-item">
+                <a class="nav-link" href="/">Liste des employés</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/add">Ajouter une employé</a>
+            </li>
+        </ul>
     </div>
+</nav>
+<div class="container employee-details">
+    <h2>Détails de l'employé</h2>
+    <div class="employee-name">
+        <span th:text="${employee.firstName}"></span> <span th:text="${employee.lastName}"></span>
+    </div>
+    <div class="employee-photo" th:if="${employee.hasPhoto()}">
+        <img th:src="@{'/employee/photo/' + ${employee.id}}" alt="Photo d'identité">
+    </div>
+    <p><span style="font-weight: bold;">Date de naissance:</span> <span th:text="${#temporals.format(employee.birthdate, 'dd/MM/yyyy')}"></span></p>
+    <p><span style="font-weight: bold;">Genre:</span> <span th:text="${employee.gender}"></span></p>
+    <p><span style="font-weight: bold;">Adresse:</span> <span th:text="${employee.address}"></span></p>
+    <p><span style="font-weight: bold;">Tel:</span> <span th:text="${employee.phoneNumber}"></span></p>
+    <p><span style="font-weight: bold;">Email personnel:</span> <span th:text="${employee.personalEmail}"></span></p>
+    <p><span style="font-weight: bold;">Email professionnel:</span> <span th:text="${employee.workEmail}"></span></p>
+    <p><span style="font-weight: bold;">Numéro de CIN:</span> <span th:text="${employee.cinNumber}"></span></p>
+    <p><span style="font-weight: bold;">Date de délivrance du CIN:</span> <span th:text="${#temporals.format(employee.cinDeliveryDate, 'dd/MM/yyyy')}"></span></p>
+    <p><span style="font-weight: bold;">Lieu de délivrance du CIN:</span> <span th:text="${employee.cinDeliveryPlace}"></span></p>
+    <p><span style="font-weight: bold;">Fonction:</span> <span th:text="${employee.jobFunction}"></span></p>
+    <p><span style="font-weight: bold;">Nombre d'enfants:</span> <span th:text="${employee.numberOfChildren}"></span></p>
+    <p><span style="font-weight: bold;">Date d'embauche:</span> <span th:text="${#temporals.format(employee.hiringDate, 'dd/MM/yyyy')}"></span></p>
+    <p><span style="font-weight: bold;">Date de départ:</span> <span th:text="${#temporals.format(employee.departureDate, 'dd/MM/yyyy')}"></span></p>
+    <p><span style="font-weight: bold;">Catégorie socio-professionnelle:</span> <span th:text="${employee.socioProfessionalCategory}"></span></p>
+    <p><span style="font-weight: bold;">Numéro CNAPS:</span> <span th:text="${employee.cnapsNumber}"></span></p>
     <div th:unless="${employee.hasPhoto()}">
         <p>Aucune image</p>
     </div>
+    <a href="/" class="btn btn-primary">Retour à la liste des employés</a>
 </div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

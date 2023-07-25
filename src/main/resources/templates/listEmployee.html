@@ -3,26 +3,162 @@
 <head>
   <meta charset="UTF-8">
   <title>Liste des employés</title>
-  <link rel="stylesheet" type="text/css" href="employee-list.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="styles/list.css">
 </head>
+
 <body>
-<h1>Liste des employés</h1>
-<table>
-  <tr>
-    <th>Nom</th>
-    <th>Prénom</th>
-    <th>Numéro matricule</th>
-    <th>Actions</th>
-  </tr>
-  <tr th:each="employee : ${employees}">
-    <td th:text="${employee.name}"></td>
-    <td th:text="${employee.firstName}"></td>
-    <td th:text="${employee.employeeNumber}"></td>
-    <td>
-      <a th:href="@{/employee/{id}(id=${employee.id})}">Détails</a>
-    </td>
-  </tr>
-</table>
-<a href="/add">Ajouter un employé</a>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <img src="logo-social.png" alt="" width="30" height="30" class="d-inline-block align-top">
+      Logo social
+    </a>
+    <ul class="navbar-nav ml-auto">>
+      <li class="nav-item">
+        <a class="nav-link" href="/">Liste des employés</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/add">Ajouter une employé</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+<div class="container">
+  <h2>Liste des employés</h2>
+  <form action="/" method="get">
+    <div class="form-row">
+      <div class="col-md-2">
+        <label for="firstName">Prénom :</label>
+        <input type="text" id="firstName" name="firstName" class="form-control" th:value="${searchParams.firstName}" />
+      </div>
+      <div class="col-md-2">
+        <label for="lastName">Nom :</label>
+        <input type="text" id="lastName" name="lastName" class="form-control" th:value="${searchParams.lastName}" />
+      </div>
+      <div class="col-md-2">
+        <label for="gender">Genre :</label>
+        <select id="gender" name="gender" class="form-control" th:value="${searchParams.gender}">
+          <option value="">-- Sélectionner --</option>
+          <option value="Masculin">Masculin</option>
+          <option value="Féminin">Féminin</option>
+          <option value="Autre">Autre</option>
+        </select>
+      </div>
+      <div class="col-md-2">
+        <label for="jobFunction">Fonction :</label>
+        <input type="text" id="jobFunction" name="jobFunction" class="form-control" th:value="${searchParams.jobFunction}" />
+      </div>
+      <div class="col-md-2">
+        <label for="hiringDateFrom">Date d'embauche (De) :</label>
+        <input type="date" id="hiringDateFrom" name="hiringDateFrom" class="form-control" th:value="${searchParams.hiringDateFrom}" />
+      </div>
+      <div class="col-md-2">
+        <label for="hiringDateTo">Date d'embauche (À) :</label>
+        <input type="date" id="hiringDateTo" name="hiringDateTo" class="form-control" th:value="${searchParams.hiringDateTo}" />
+      </div>
+    </div>
+    <br>
+    <div class="form-row">
+      <div class="col-md-2">
+        <label for="departureDateFrom">Date de départ (De) :</label>
+        <input type="date" id="departureDateFrom" name="departureDateFrom" class="form-control" th:value="${searchParams.departureDateFrom}" />
+      </div>
+      <div class="col-md-2">
+        <label for="departureDateTo">Date de départ (À) :</label>
+        <input type="date" id="departureDateTo" name="departureDateTo" class="form-control" th:value="${searchParams.departureDateTo}" />
+      </div>
+      <div class="col-md-2">
+        <button type="submit" class="btn btn-primary" style="margin-top: 32px;">Rechercher</button>
+      </div>
+    </div>
+  </form>
+  <br>
+  <div class="table-responsive">
+  <table class="table table-striped">
+    <thead class="thead-dark">
+    <tr>
+      <th>Numéro d'employé</th>
+      <th>Nom</th>
+      <th>Prénom</th>
+      <th>Date de naissance</th>
+      <th>Genre</th>
+      <th>Adresse</th>
+      <th>Tel</th>
+      <th>Email personnel</th>
+      <th>Email professionnel</th>
+      <th>Numéro de CIN</th>
+      <th>Date de délivrance du CIN</th>
+      <th>Lieu de délivrance du CIN</th>
+      <th>Fonction</th>
+      <th>Nombre d'enfants</th>
+      <th>Date d'embauche</th>
+      <th>Date de départ</th>
+      <th>Catégorie socio-professionnelle</th>
+      <th>Numéro CNAPS</th>
+      <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="employee : ${employees}">
+      <td th:text="${employee.employeeNumber}"></td>
+      <td th:text="${employee.firstName}"></td>
+      <td th:text="${employee.lastName}"></td>
+      <td th:text="${#temporals.format(employee.birthdate, 'dd/MM/yyyy')}"></td>
+      <td th:text="${employee.gender}"></td>
+      <td th:text="${employee.address}"></td>
+      <td th:text="${employee.phoneNumber}"></td>
+      <td th:text="${employee.personalEmail}"></td>
+      <td th:text="${employee.workEmail}"></td>
+      <td th:text="${employee.cinNumber}"></td>
+      <td th:text="${#temporals.format(employee.cinDeliveryDate, 'dd/MM/yyyy')}"></td>
+      <td th:text="${employee.cinDeliveryPlace}"></td>
+      <td th:text="${employee.jobFunction}"></td>
+      <td th:text="${employee.numberOfChildren}"></td>
+      <td th:text="${#temporals.format(employee.hiringDate, 'dd/MM/yyyy')}"></td>
+      <td th:text="${#temporals.format(employee.departureDate, 'dd/MM/yyyy')}"></td>
+      <td th:text="${employee.socioProfessionalCategory}"></td>
+      <td th:text="${employee.cnapsNumber}"></td>
+      <td>
+        <a th:href="@{/employee/{id}(id=${employee.id})}" class="btn btn-info btn-sm">Voir</a>
+        <a th:href="@{/employee/{id}/edit(id=${employee.id})}" class="btn btn-warning btn-sm">Modifier</a>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+    </div>
+
+  <div>
+    <label for="sortByAsc">Trier par ordre croissant :</label>
+    <select id="sortByAsc" class="form-control" onchange="window.location.href=this.value;">
+      <option value="">-- Sélectionner --</option>
+      <option th:value="@{/?sort=firstName,asc}" class="btn btn-secondary btn-sm">Prénom</option>
+      <option th:value="@{/?sort=lastName,asc}" class="btn btn-secondary btn-sm">Nom</option>
+      <option th:value="@{/?sort=gender,asc}" class="btn btn-secondary btn-sm">Genre</option>
+      <option th:value="@{/?sort=jobFunction,asc}" class="btn btn-secondary btn-sm">Fonction</option>
+    </select>
+  </div>
+
+  <div>
+    <label for="sortByDesc">Trier par ordre décroissant :</label>
+    <select id="sortByDesc" class="form-control" onchange="window.location.href=this.value;">
+      <option value="">-- Sélectionner --</option>
+      <option th:value="@{/?sort=firstName,desc}" class="btn btn-secondary btn-sm">Prénom</option>
+      <option th:value="@{/?sort=lastName,desc}" class="btn btn-secondary btn-sm">Nom</option>
+      <option th:value="@{/?sort=gender,desc}" class="btn btn-secondary btn-sm">Genre</option>
+      <option th:value="@{/?sort=jobFunction,desc}" class="btn btn-secondary btn-sm">Fonction</option>
+    </select>
+  </div>
+
+  <br>
+  <a href="/add" class="btn btn-primary btn-danger">Ajouter un employé</a>
+  <a th:href="@{download-employees-csv(firstName=${searchParams.firstName}, lastName=${searchParams.lastName}, gender=${searchParams.gender}, jobFunction=${searchParams.jobFunction}, hiringDateFrom=${searchParams.hiringDateFrom}, hiringDateTo=${searchParams.hiringDateTo}, departureDateFrom=${searchParams.departureDateFrom}, departureDateTo=${searchParams.departureDateTo})}" class="btn btn-primary btn-danger">Télécharger</a>
+
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
 </body>
 </html>

@@ -1,10 +1,33 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8">
+    <title>Harmony Haven</title>
 </head>
 <body>
-$END$
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+        <a class="navbar-brand" href="/">
+            <img src="logo-social.png" alt="" width="30" height="30" class="d-inline-block align-top">
+            Logo social
+        </a>
+        <ul class="navbar-nav ml-auto">>
+            <li class="nav-item">
+                <a class="nav-link" href="/">Liste des employés</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/add">Ajouter une employé</a>
+            </li>
+            <li class="navbar-nav text-end">
+                <a class="nav-item nav-link" th:href="@{/logout}">Deconnexion</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<div>
+    <h1>Bienvenue chez Harmony Haven</h1>
+    <p>Trouvez l'harmonie dans chaque coin de votre chez-vous.</p>
+</div>
 </body>
 </html>

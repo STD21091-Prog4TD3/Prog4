@@ -20,4 +20,7 @@ public class SearchParams {
         private LocalDate departureDateFrom;
         private LocalDate departureDateTo;
 
+
+        public SearchParams(String firstName, String lastName, String gender, String jobFunction) {
+        }
 }

@@ -2,14 +2,13 @@ package com.prog.TD.controller;
 
 import com.opencsv.CSVWriter;
 import com.prog.TD.modele.Employee;
-import com.prog.TD.modele.SearchParams;
 import com.prog.TD.service.EmployeeService;
-import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
@@ -23,125 +22,17 @@ public class EmployeeController {
         this.employeeService = employeeService;
     }
     @GetMapping("/")
-    public String showEmployeeList(@RequestParam(value = "firstName", required = false) String firstName,
-                                   @RequestParam(value = "lastName", required = false) String lastName,
-                                   @RequestParam(value = "gender", required = false) String gender,
-                                   @RequestParam(value = "jobFunction", required = false) String jobFunction,
-                                   @RequestParam(value = "hiringDateFrom", required = false) LocalDate hiringDateFrom,
-                                   @RequestParam(value = "hiringDateTo", required = false) LocalDate hiringDateTo,
-                                   @RequestParam(value = "departureDateFrom", required = false) LocalDate departureDateFrom,
-                                   @RequestParam(value = "departureDateTo", required = false) LocalDate departureDateTo,
-                                   @RequestParam(value = "sort", required = false) String sort,
-                                   Model model) {
+    public String showEmployeeList(
+            @RequestParam(name = "firstName", required = false) String firstName,
+            @RequestParam(name = "lastName", required = false) String lastName,
+            @RequestParam(name = "gender", required = false) String gender,
+            @RequestParam(name = "jobFunction", required = false) String jobFunction,
+            @RequestParam(name = "hiringDate", required = false) String hiringDate,
+            @RequestParam(name = "departureDate", required = false) String departureDate,
+            @RequestParam(name = "sort", defaultValue = "") String sort,
+            Model model) {
 
-        List<Employee> employees = employeeService.getAllEmployees();
-
-        if (firstName != null && !firstName.isEmpty()) {
-            employees = employees.stream()
-                    .filter(employee -> employee.getFirstName().contains(firstName))
-                    .collect(Collectors.toList());
-        }
-        if (lastName != null && !lastName.isEmpty()) {
-            employees = employees.stream()
-                    .filter(employee -> employee.getFirstName().contains(lastName))
-                    .collect(Collectors.toList());
-        }
-        if (gender != null && !gender.isEmpty()) {
-            employees = employees.stream()
-                    .filter(employee -> employee.getGender().equals(gender))
-                    .collect(Collectors.toList());
-        }
-        if (jobFunction != null && !jobFunction.isEmpty()) {
-            employees = employees.stream()
-                    .filter(employee -> employee.getJobFunction().contains(jobFunction))
-                    .collect(Collectors.toList());
-        }
-        if (hiringDateFrom != null) {
-            employees = employees.stream().filter(employee -> employee.getHiringDate().isAfter(hiringDateFrom.minusDays(1)))
-                    .collect(Collectors.toList());
-        }
-        if (hiringDateTo != null) {
-            employees = employees.stream()
-                    .filter(employee -> employee.getHiringDate().isBefore(hiringDateTo.plusDays(1)))
-                    .collect(Collectors.toList());
-        }
-        if (departureDateFrom != null) {
-            employees = employees.stream()
-                    .filter(employee -> employee.getDepartureDate().isAfter(departureDateFrom.minusDays(1)))
-                    .collect(Collectors.toList());
-        }
-        if (departureDateTo != null) {
-            employees = employees.stream()
-                    .filter(employee -> employee.getDepartureDate().isBefore(departureDateTo.plusDays(1)))
-                    .collect(Collectors.toList());
-        }
-        if (sort != null && !sort.isEmpty()) {
-            String[] sortParams = sort.split(",");
-            if (sortParams.length == 2) {
-                String sortField = sortParams[0];
-                String sortOrder = sortParams[1];
-                employees = employees.stream()
-                        .sorted((e1, e2) -> {
-                            int result = 0;
-                            if ("asc".equals(sortOrder)) {
-                                switch (sortField) {
-                                    case "firstName":
-                                        result = e1.getFirstName().compareTo(e2.getFirstName());
-                                        break;
-                                    case "lastName":
-                                        result = e1.getLastName().compareTo(e2.getLastName());
-                                        break;
-                                    case "gender":
-                                        result = e1.getGender().compareTo(e2.getGender());
-                                        break;
-                                    case "jobFunction":
-                                        result = e1.getJobFunction().compareTo(e2.getJobFunction());
-                                        break;
-                                    case "hiringDate":
-                                        result = e1.getHiringDate().compareTo(e2.getHiringDate());
-                                        break;
-                                    case "departureDate":
-                                        result = e1.getDepartureDate().compareTo(e2.getDepartureDate());
-                                        break;
-                                }} else if ("desc".equals(sortOrder)) {
-                                switch (sortField) {
-                                    case "firstName":
-                                        result = e2.getFirstName().compareTo(e1.getFirstName());
-                                        break;
-                                    case "lastName":
-                                        result = e2.getLastName().compareTo(e1.getLastName());
-                                        break;
-                                    case "gender":
-                                        result = e2.getGender().compareTo(e1.getGender());
-                                        break;
-                                    case "jobFunction":
-                                        result = e2.getJobFunction().compareTo(e1.getJobFunction());
-                                        break;
-                                    case "hiringDate":
-                                        result = e2.getHiringDate().compareTo(e1.getHiringDate());
-                                        break;
-                                    case "departureDate":
-                                        result = e2.getDepartureDate().compareTo(e1.getDepartureDate());
-                                        break;
-                                }
-                            }
-                            return result;
-                        })
-                        .collect(Collectors.toList());
-            }
-        }
-
-        SearchParams searchParams = new SearchParams();
-        searchParams.setFirstName(firstName);
-        searchParams.setLastName(lastName);
-        searchParams.setGender(gender);
-        searchParams.setJobFunction(jobFunction);
-        searchParams.setHiringDateFrom(hiringDateFrom);
-        searchParams.setHiringDateTo(hiringDateTo);
-        searchParams.setDepartureDateFrom(departureDateFrom);
-        searchParams.setDepartureDateTo(departureDateTo);
-
-        model.addAttribute("searchParams", searchParams);
+        List<Employee> employees = employeeService.customSearch(firstName, lastName, gender, jobFunction, hiringDate, departureDate, sort);
         model.addAttribute("employees", employees);
         return "listEmployee";
     }

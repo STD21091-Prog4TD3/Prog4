@@ -1,10 +1,31 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <title>Connexion</title>
 </head>
 <body>
-$END$
+<div class="bg-light d-flex flex-column justify-content-center align-items-center vh-100">
+    <div class="shadow-sm border w-25 h-75 rounded d-flex flex-column justify-content-center align-items-center" id="welcome">
+        <div class="text-center p-2">
+            <h1 class="py-2">Veuillez vous connecter</h1>
+            <form th:action="@{/login}" th:object="${userEntity}" method="post">
+                <div class="mb-3">
+                    <input class="form-control" type="text" name="userName" placeholder="Nom d'utilisateur">
+                </div>
+                <div class="mb-3">
+                    <input class="form-control" type="password" name="password" placeholder="Mot de passe">
+                </div>
+                <div>
+                    <button class="btn btn-primary btn-danger"type="submit">Connexion</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
